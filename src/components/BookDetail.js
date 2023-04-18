@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Card,
   Stack,
   CardBody,
   Heading,
-  Button,
   Text,
   Container,
   Image,
@@ -12,8 +11,23 @@ import {
   Box
 } from '@chakra-ui/react'
 import {  ArrowBackIcon } from '@chakra-ui/icons'
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
+import axios from 'axios';
 function BookDetail() {
+
+    let { bookId } = useParams();
+    const [book, setBook] = useState()
+
+useEffect(() => {
+    axios(`https://www.googleapis.com/books/v1/volumes/${bookId}`)
+    .then((res) => setBook(res.data))
+    .catch((e) => console.log(e))
+   
+});
+
   return (
+    
     <Box
       w="100%"
       h="220px"
@@ -25,7 +39,7 @@ function BookDetail() {
             Search Detail
           </Text>
         </Center>
-
+        { book &&  
         <Card
           direction={{ base: 'column', sm: 'row' }}
           overflow="hidden"
@@ -34,46 +48,32 @@ function BookDetail() {
         >
           <Stack>
             <CardBody>
-            <Button mt={4} colorScheme="gray" type="submit">
+            <Link mt={4} to="/">
                 <ArrowBackIcon />
-              </Button>
-                <Center><Heading size="lg">The Flower Workshop</Heading></Center>
-                <Center><Text py="2">Ariella Chezar, Julie Michaels</Text></Center>
+              </Link>
+                <Center><Heading size="lg">{book.volumeInfo.title}</Heading></Center>
+                <Center><Text py="2">{book.volumeInfo.authors?.join(', ')}</Text></Center>
               <Center><Image 
                 h={200}
                 w={140}
-                src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                alt="Green double couch with wooden legs"
+                src={
+                    book.volumeInfo.imageLinks?.thumbnail ||
+                    'https://media.istockphoto.com/id/1132987502/tr/vekt%C3%B6r/vekt%C3%B6r-ger%C3%A7ek%C3%A7i-bo%C5%9F-kitap-kapa%C4%9F%C4%B1-%C3%BCst-g%C3%B6r%C3%BCn%C3%BCm-yal%C4%B1t%C4%B1lm%C4%B1%C5%9F.jpg?s=170667a&w=0&k=20&c=o7q9Yrn1hoZmUPXvf9qssdoljtgz-zfkM2Z7Gz-nCzw='
+                  }
+                alt={book.volumeInfo.title}
                 borderRadius="xs"
               /></Center>
               
               <Text py="2">
-                A first garden story board book that reveals how plants grow
-                with lift-the-flaps and a pullout height chart. Teach your child
-                how a tiny seed grows into a flower in this fascinating
-                lift-the-flap garden story. A pullout height chart ends the
-                book--a great way for children to remember how a sunflower
-                grows, and to measure how fast your child grows, too! Through
-                illustrations, photography, and flaps, sixteen delightful board
-                book pages reveal the wonder of how plants grow as you follow
-                the story of a mystery seed. How was it planted? What does it
-                need? What will it become? As days go by, it's hard to imagine
-                the tiny shoot will ever grow into a big, strong plant. Could it
-                magically become the tallest of all the garden flowers? Flaps
-                unfold to show plants growing, creatures hiding, and what's
-                happening underground. The book includes very simple gardening
-                projects and facts about garden creatures (which ones are good
-                for plants, and which ones are bad), and children will find out
-                what a pollinator is, and how to attract pollinators to the
-                garden. The perfect gift for aspiring gardeners, complete with a
-                height chart.
+              <div dangerouslySetInnerHTML={{ __html: book.volumeInfo.description }} />
               </Text>
-              <Text align={'right'} py="2">23.01.2015</Text>
+              <Text align={'right'} py="2">{book.volumeInfo.publishedDate}</Text>
             </CardBody>
           </Stack>
         </Card>
+        }
       </Container>
-    </Box>
+    </Box> 
   )
 }
 
