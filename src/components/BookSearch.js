@@ -1,4 +1,5 @@
 import { useState } from 'react'
+//Chakra events are imported.
 import {
   Container,
   Center,
@@ -21,13 +22,16 @@ import { Link } from "react-router-dom";
 import axios from 'axios'
 
 function BookSearch() {
+  //The data returned from the api is kept in the books state.
   const [books, setBooks] = useState()
+  //The data entered into the input is kept in the serchbook state.
   const [searchbook, setSearchBook] = useState('')
-
+//When the input is handle, the value information is transferred to the searchbook.
   function handleChange(event) {
     setSearchBook(event.target.value)
   }
-
+// When the form is submitted, a request is made to the API according to the data entered in the input
+ //This returned data is transferred to the books.
   function formSubmit(event) {
     event.preventDefault()
 

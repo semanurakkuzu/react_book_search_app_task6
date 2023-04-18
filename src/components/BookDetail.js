@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+//Chakra events are imported.
 import {
   Card,
   Stack,
@@ -15,10 +16,12 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import axios from 'axios';
 function BookDetail() {
-
+// useparam is used to access the id information from the link.
     let { bookId } = useParams();
+    //The data returned from the API has been transferred to the book state.
     const [book, setBook] = useState()
-
+//According to the id information received when entering the page,
+// A request was made to the api again and this information was transferred to the book state.
 useEffect(() => {
     axios(`https://www.googleapis.com/books/v1/volumes/${bookId}`)
     .then((res) => setBook(res.data))
