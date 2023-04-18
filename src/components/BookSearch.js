@@ -17,6 +17,7 @@ import {
   Heading
 } from '@chakra-ui/react'
 import { Search2Icon } from '@chakra-ui/icons'
+import { Link } from "react-router-dom";
 import axios from 'axios'
 
 function BookSearch() {
@@ -53,7 +54,7 @@ function BookSearch() {
                   bg="white"
                   value={searchbook}
                   onChange={handleChange}
-                  placeholder="book title"
+                  placeholder="book title or author"
                 />
               </Box>
             </FormControl>
@@ -93,9 +94,11 @@ function BookSearch() {
                           {book.volumeInfo.authors?.join(', ')}
                         </Text>
                       </Center>
-                      <Button variant="link" colorScheme="blue" fontSize="xs">
+                      <Center>
+                      <Link  to={`book/${book.id}`} variant="link" colorScheme="blue" fontSize="xs">
                         Detail
-                      </Button>
+                      </Link>
+                      </Center>
                     </Stack>
                   </CardBody>
                 </Card>
